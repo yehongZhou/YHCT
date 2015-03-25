@@ -22,8 +22,9 @@
     self.yhTextView.yhctData = nameData;
 
 3、事件捕捉
-    void(^linkClickAction)(YHCTLinkData* linkData) = ^(YHCTLinkData* linkData){
-    
+
+     void(^linkClickAction)(YHCTLinkData* linkData) = ^(YHCTLinkData* linkData){
+         
         NSString *action = linkData.action;
         
         if ([action isEqualToString:@"http"] || [action isEqualToString:@"https"]){
