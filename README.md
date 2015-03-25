@@ -5,7 +5,7 @@
 
 1、初始化
 
-    self.yhTextView = [[YHCoreTextView alloc] initWithFrame:CGRectMake(nameLeft, 12, self.width-8-12, 25)];
+    self.yhTextView = [[YHCoreTextView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 300)];
     
     self.yhTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
     
