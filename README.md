@@ -1,6 +1,8 @@
 # YHCT
 利用CoreText实现的图文混排组件，适合聊天界面、Timeline等。可自动解析手机号码、超链接，也可以自定义点击事件。长按会弹出复制、举报（自定义菜单项）。
 
+ ![image](https://github.com/yehongZhou/YHCT/raw/master/screenshot.png)
+ 
 使用方法：
 
 1、初始化
