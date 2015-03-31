@@ -46,10 +46,7 @@
     data4.praise = @[[User instanceByUid:101 name:@"用户1"],[User instanceByUid:102 name:@"用户2"],[User instanceByUid:103 name:@"用户3"]];
     contentTest = @[data1,data2,data3,data4];
     
-    [contentTest enumerateObjectsUsingBlock:^(TableData *obj, NSUInteger idx, BOOL *stop) {
-        [obj calContentHeightByWidth:self.view.frame.size.width-8-8];
-        [obj calPraiseHeightByWidth:self.view.frame.size.width-8-8];
-    }];
+    [self _calDataHeight:self.interfaceOrientation];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -67,6 +64,25 @@
     return [_protoCell cellHeight:tableView.frame.size.width];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    [self _calDataHeight:toInterfaceOrientation];
+    [self.tableView reloadData];
+}
+
+-(void)_calDataHeight:(UIInterfaceOrientation)interfaceOrientation{
+    CGFloat w = 0;
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+        w = CGRectGetHeight([UIScreen mainScreen].bounds);
+    }else if (UIInterfaceOrientationIsPortrait(interfaceOrientation) && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
+        w = CGRectGetHeight([UIScreen mainScreen].bounds);
+    }else {
+        w = CGRectGetWidth([UIScreen mainScreen].bounds);
+    }
+    [contentTest enumerateObjectsUsingBlock:^(TableData *obj, NSUInteger idx, BOOL *stop) {
+        [obj calContentHeightByWidth:w-8-8];
+        [obj calPraiseHeightByWidth:w-8-8];
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
