@@ -80,7 +80,7 @@ CTRunDelegateRef newEmotionRunDelegate(){
     CTRunDelegateRef runDelegate = CTRunDelegateCreate(&imageCallbacks,
                                                        (__bridge void *)(emotionRunName));
     
-    return runDelegate;
+    return CFAutorelease(runDelegate);
 }
 
 #pragma mark - Run delegate
