@@ -36,7 +36,9 @@
     [yhctData.imageDatas enumerateObjectsUsingBlock:^(YHCTImageData *obj, NSUInteger idx, BOOL *stop) {
         NSString *image = obj.image;
         [attrString addAttribute:YHCT_FACE_IMAGE value:image range:obj.range];
-        [attrString addAttribute:(NSString *)kCTRunDelegateAttributeName value:(__bridge id)newEmotionRunDelegate() range:obj.range];
+        CTRunDelegateRef imgDelegateRef = newEmotionRunDelegate();
+        [attrString addAttribute:(NSString *)kCTRunDelegateAttributeName value:(__bridge id)imgDelegateRef range:obj.range];
+        CFRelease(imgDelegateRef);
     }];
     
     yhctData.drawTextAttribute = attrString;
@@ -80,7 +82,7 @@ CTRunDelegateRef newEmotionRunDelegate(){
     CTRunDelegateRef runDelegate = CTRunDelegateCreate(&imageCallbacks,
                                                        (__bridge void *)(emotionRunName));
     
-    return CFAutorelease(runDelegate);
+    return runDelegate;
 }
 
 #pragma mark - Run delegate
