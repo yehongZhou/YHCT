@@ -110,13 +110,15 @@
                 if (i == 0) {
                     originRange = tempRange;
                 }else if (i == 1) {
-                    yhCTImageData.image = tempStr;
+                    yhCTImageData.imageName = tempStr;
                 }
             }
         }
         [resultString appendString:[content substringToIndex:originRange.location]];
-        if (yhCTImageData.image) {
-            if ([self imageWithName:yhCTImageData.image]) {
+        if (yhCTImageData.imageName) {
+            UIImage *img = [self imageWithName:yhCTImageData.imageName];
+            if (img) {
+                yhCTImageData.image = img;
                 yhCTImageData.range = NSMakeRange(resultString.length, YHCT_IMG_PLACEHOLDER.length);
                 [resultString appendString:YHCT_IMG_PLACEHOLDER];
                 [imgsDatas addObject:yhCTImageData];

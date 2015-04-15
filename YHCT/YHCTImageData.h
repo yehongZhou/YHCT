@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface YHCTImageData : NSObject
 
-@property(nonatomic,copy)NSString *image;
+@property(nonatomic,copy)NSString *imageName;
+@property(nonatomic,strong)UIImage *image;
 @property(nonatomic,assign)NSRange range;
 
 @end

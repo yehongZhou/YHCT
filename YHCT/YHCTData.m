@@ -33,13 +33,14 @@
     
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:drawTextString];
     
+    [attrString beginEditing];
     [yhctData.imageDatas enumerateObjectsUsingBlock:^(YHCTImageData *obj, NSUInteger idx, BOOL *stop) {
-        NSString *image = obj.image;
-        [attrString addAttribute:YHCT_FACE_IMAGE value:image range:obj.range];
+        [attrString addAttribute:YHCT_FACE_IMAGE value:obj.image range:obj.range];
         CTRunDelegateRef imgDelegateRef = newEmotionRunDelegate();
         [attrString addAttribute:(NSString *)kCTRunDelegateAttributeName value:(__bridge id)imgDelegateRef range:obj.range];
         CFRelease(imgDelegateRef);
     }];
+    [attrString endEditing];
     
     yhctData.drawTextAttribute = attrString;
     return yhctData;

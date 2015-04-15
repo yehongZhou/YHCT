@@ -325,9 +325,9 @@
             CTRunRef runRef = CFArrayGetValueAtIndex(runs, i);
             
             CFDictionaryRef attributes = CTRunGetAttributes(runRef);
-            NSString *image = (NSString *)CFDictionaryGetValue(attributes, YHCT_FACE_IMAGE);
+            UIImage *image = (UIImage *)CFDictionaryGetValue(attributes, YHCT_FACE_IMAGE);
             if (image){
-                CGImageRef img = [[YHCTUtil imageWithName:image] CGImage];
+                CGImageRef img = [image CGImage];
                 const CGPoint *runPoint = CTRunGetPositionsPtr(runRef);
                 CGRect imageRect = CGRectMake(runPoint->x+YHCT_IMAGE_H_PADDING, y - YHCT_IMAGE_V_PADDING, YHCT_IMAGE_WIDTH, YHCT_IMAGE_WIDTH);
                 CGContextDrawImage(context, imageRect, img);
