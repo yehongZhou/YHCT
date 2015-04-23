@@ -10,7 +10,7 @@
 #import "YHCTLinkData.h"
 #import "YHCTImageData.h"
 
-#define YHCT_A_PATTERN @"\\<a href='(\\w+)://(\\S+)'>(.*?)</a>"
+#define YHCT_A_PATTERN @"\\<a href='(\\w+)://(\\S+)'>([\\s\\S]*?)</a>"
 #define YHCT_IMG_PATTERN @"\\[(\\w+)\\]"
 
 #define YHCT_IMG_PLACEHOLDER @" "
