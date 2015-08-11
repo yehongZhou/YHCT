@@ -10,7 +10,7 @@
 #import "YHCTLinkData.h"
 #import "YHCTImageData.h"
 
-#define YHCT_A_PATTERN @"\\<a href='(\\w+)://(\\S+)'>([\\s\\S]*?)</a>"
+#define YHCT_A_PATTERN @"\\<a href='(\\w+)://([\\s\\S]*?)'>([\\s\\S]*?)</a>"
 #define YHCT_IMG_PATTERN @"\\[(\\w+)\\]"
 
 #define YHCT_IMG_PLACEHOLDER @" "
@@ -41,6 +41,7 @@
                     NSString *leftStr = [content substringWithRange:NSMakeRange(lastRange.location + lastRange.length, range.location-(lastRange.location + lastRange.length))];
                     leftStr = [self _parserMobile:leftStr];
                     leftStr = [self _parserUrl:leftStr];
+                    leftStr = [self _parserTopic:leftStr];
                     [tempResult appendString:leftStr];
                     [tempResult appendString:[content substringWithRange:range]];
                     lastRange = range;
@@ -49,6 +50,7 @@
             }else {
                 content = [self _parserMobile:content];
                 content = [self _parserUrl:content];
+                content = [self _parserTopic:content];
             }
             [self _doParser:content result:resultString byLinkRegx:linkRegx links:linkDatas byImgRegx:imgRegx images:imgDatas];
         }else {
@@ -60,13 +62,27 @@
 }
 
 +(NSString*)_parserMobile:(NSString*)content{
+    if ([content isEqualToString:@""]) {
+        return content;
+    }
     NSString *result = [self stringByReplacingOccurrencesOfString:content regex:@"(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[01235-9])\\d{8}" withString:@"<a href='tel://%1$@'>%1$@</a>"];
     return result;
 }
 
 //1[ok]23<a href='aaa'>abc</a>b18618427263pppp
 +(NSString*)_parserUrl:(NSString*)content{
+    if ([content isEqualToString:@""]) {
+        return content;
+    }
     NSString *result = [self stringByReplacingOccurrencesOfString:content regex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)" withString:@"<a href='%1$@'>%1$@</a>"];
+    return result;
+}
+
++(NSString*)_parserTopic:(NSString*)content{
+    if ([content isEqualToString:@""]) {
+        return content;
+    }
+    NSString *result = [self stringByReplacingOccurrencesOfString:content regex:@"(\\#|\\@)([\\s\\S]*?)(\\s|$)" withString:@"<a href='topic://%1$@'>%1$@</a>"];
     return result;
 }
 

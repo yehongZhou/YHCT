@@ -30,7 +30,7 @@
 
 -(void)_testData{
     TableData *data1 = [TableData new];
-    data1.content = @"自动解析手机号码1862345543233444自动解析超链接https://www.apple.com自动解析超链接http://www.baidu.com。";
+    data1.content = @"自动解析手机号码1862345543233444自动解析超链接https://www.apple.com自动解析超链接http://www.baidu.com。话题#话题测试 艾特@用户";
     data1.user = [User instanceByUid:1 name:@"姓名1"];
     data1.praise = @[[User instanceByUid:101 name:@"用户1"],[User instanceByUid:102 name:@"用户2"],[User instanceByUid:103 name:@"用户3"]];
     TableData *data2 = [TableData new];
@@ -45,7 +45,6 @@
     data4.user = [User instanceByUid:4 name:@"姓名4"];
     data4.praise = @[[User instanceByUid:101 name:@"用户1"],[User instanceByUid:102 name:@"用户2"],[User instanceByUid:103 name:@"用户3"]];
     contentTest = @[data1,data2,data3,data4];
-    
     [self _calDataHeight:self.interfaceOrientation];
 }
 
