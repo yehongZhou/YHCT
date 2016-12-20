@@ -316,7 +316,6 @@
         CGContextSetFillColorWithColor(context, self.yhctData.selectedBgColor.CGColor);
         CGContextFillRect(context, CGRectMake(rect.origin.x, -rect.size.height+self.yhctData.fontsize, rect.size.width, rect.size.height));
         CGContextRestoreGState(context);
-        hilghtFirstLineRect = rect;
     }
     
     CGFloat y= 0;
@@ -406,6 +405,9 @@
 
 -(void)setHighlight:(BOOL)highlight{
     _highlight = highlight;
+    if (highlight) {
+        hilghtFirstLineRect = self.bounds;
+    }
     [self setNeedsDisplay];
 }
 
