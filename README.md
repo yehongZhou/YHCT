@@ -15,7 +15,7 @@
     
 2、赋值
 
-    NSString text = @"手机号码1862345543233444超链接https://www.apple.com自动[ok]解析[hello]表[下雨]图片，如果中括号中的图片找不多，会原封不动的显示字符串[duang].";
+    NSString text = @"自定义事件<a href='hehe://1023'>click me</a>。手机号码1862345543233444超链接https://www.apple.com自动[ok]解析[hello]表[下雨]图片，如果中括号中的图片找不多，会原封不动的显示字符串[duang].";
     
     YHCTData *nameData = [YHCTData instanceYHCTDataWith:text originText:text];
     
