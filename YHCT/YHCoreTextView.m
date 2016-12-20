@@ -15,6 +15,7 @@
 
 @interface YHCoreTextView(){
     CTTypesetterRef typesetter;
+    CGRect hilghtFirstLineRect;
     //    NSUInteger _originLines;
 }
 @property(nonatomic,strong)UILongPressGestureRecognizer *longGest ;
@@ -54,6 +55,9 @@
 }
 
 -(void)menuWillHideNtf:(id)sender{
+    if (!self.window) {
+        return;
+    }
     YHCTLinkData *highlightData = [self _getHighlightLinkData];
     BOOL needDraw = NO;
     if (highlightData) {
@@ -206,7 +210,9 @@
         [menusItem addObject:__item];
     }];
     [menu setMenuItems:menusItem];
-    [menu setTargetRect:self.frame inView:self.superview];
+    hilghtFirstLineRect.origin.y = ABS(hilghtFirstLineRect.origin.y);
+    CGRect rect = [self.superview convertRect:hilghtFirstLineRect fromView:self];
+    [menu setTargetRect:rect inView:self.superview];
     [menu setMenuVisible:YES animated:YES];
 }
 
@@ -298,6 +304,7 @@
 }
 
 -(void)drawRect:(CGRect)rect{
+    hilghtFirstLineRect = CGRectZero;
     YHCTLinkData *highlightData = [self _getHighlightLinkData];
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetTextMatrix(context , CGAffineTransformIdentity);
@@ -309,6 +316,7 @@
         CGContextSetFillColorWithColor(context, self.yhctData.selectedBgColor.CGColor);
         CGContextFillRect(context, CGRectMake(rect.origin.x, -rect.size.height+self.yhctData.fontsize, rect.size.width, rect.size.height));
         CGContextRestoreGState(context);
+        hilghtFirstLineRect = rect;
     }
     
     CGFloat y= 0;
@@ -347,7 +355,15 @@
                         float RunWidth=CTRunGetTypographicBounds(runRef, CFRangeMake(0,0), &runAscent, &runDescent, NULL);
                         CGFloat runHeight = runAscent + (runDescent);
                         CGRect highlightRect = CGRectMake(posPtr[0].x-1, y-(runDescent), RunWidth+2, runHeight);
-                        
+                        if (CGRectIsEmpty(hilghtFirstLineRect)) {
+                            hilghtFirstLineRect = highlightRect;
+                        }else if(highlightRect.origin.x > hilghtFirstLineRect.origin.x){
+                            hilghtFirstLineRect.size.width = highlightRect.origin.x + highlightRect.size.width - hilghtFirstLineRect.origin.x;
+                        }else{
+                            //换行 了
+                            hilghtFirstLineRect.origin.x = highlightRect.origin.x;
+                            hilghtFirstLineRect.size.width = rect.size.width;
+                        }
                         UIBezierPath *bp = [UIBezierPath bezierPathWithRoundedRect:highlightRect cornerRadius:2];
                         CGContextSaveGState(context);
                         CGContextAddPath(context, bp.CGPath);
